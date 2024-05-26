@@ -1,0 +1,21 @@
+spring.application.name: fleet-booking-service
+
+server.error.include-message: on_param
+server.port: 8081
+
+# LOGGING
+##########
+logging.level.root: info
+
+# RABBITMQ
+##########
+spring:
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: user
+    password: pass
+
+# SERVICE
+##########
+fleet-booking: prop

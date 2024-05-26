@@ -1,0 +1,43 @@
+version: "3.2"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: pass
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./init/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./init/definitions.json:/etc/rabbitmq/definitions.json:ro
+    networks:
+      - fleet-net
+  fleet-booking-service:
+    container_name: 'fleet-booking-service'
+    build:
+      context: ./fleet-booking-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - rabbitmq
+    networks:
+      - fleet-net
+  fleet-taxi-service:
+    container_name: 'fleet-taxi-service'
+    build:
+      context: ./fleet-taxi-service
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    depends_on:
+      - rabbitmq
+    networks:
+      - fleet-net
+
+networks:
+  fleet-net:
+    driver: bridge

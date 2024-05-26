@@ -1,0 +1,12 @@
+spring.application.name: fleet-taxi-service
+
+server.error.include-message: on_param
+server.port: 8082
+
+# LOGGING
+##########
+logging.level.root: info
+
+# SERVICE
+##########
+fleet-taxi: prop
