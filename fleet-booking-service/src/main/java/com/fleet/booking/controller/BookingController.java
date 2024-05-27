@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(ApiConstants.PATH_BOOKINGS)
 public class BookingController {
 
-    private CreateBooking createBooking;
+    private final CreateBooking createBooking;
 
     public BookingController(CreateBooking createBooking) {
         this.createBooking = createBooking;

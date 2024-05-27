@@ -1,0 +1,25 @@
+version: "3.2"
+
+services:
+
+  fleet-tests:
+    container_name: 'fleet-tests'
+    build:
+      context: ./fleet-tests
+      dockerfile: Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      fleet-booking-service:
+        condition: service_healthy
+      fleet-taxi-service-1:
+        condition: service_healthy
+      fleet-taxi-service-2:
+        condition: service_healthy
+    networks:
+      - fleet-net
+    volumes:
+      - fleet-volume:/root/.m2
+
+volumes:
+  fleet-volume:

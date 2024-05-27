@@ -1,6 +1,7 @@
 version: "3.2"
 
 services:
+
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: 'rabbitmq'
@@ -15,6 +16,13 @@ services:
       - ./init/definitions.json:/etc/rabbitmq/definitions.json:ro
     networks:
       - fleet-net
+    healthcheck:
+      test: netstat -ltn | grep -c 15672
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
   fleet-booking-service:
     container_name: 'fleet-booking-service'
     build:
@@ -23,20 +31,47 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
     networks:
       - fleet-net
-  fleet-taxi-service:
-    container_name: 'fleet-taxi-service'
+    healthcheck:
+      test: curl --fail --silent localhost:8081/status
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  fleet-taxi-service-1: &fleet-taxi-service
+    container_name: 'fleet-taxi-service-1'
+    environment:
+      BOOKING_TAXI_QUEUE: booking-taxi-queue-1
     build:
       context: ./fleet-taxi-service
       dockerfile: Dockerfile
     ports:
       - "8082:8082"
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+      fleet-booking-service:
+        condition: service_healthy
     networks:
       - fleet-net
+    healthcheck:
+      test: curl --fail --silent localhost:8082/status
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  fleet-taxi-service-2:
+    <<: *fleet-taxi-service
+    container_name: 'fleet-taxi-service-2'
+    environment:
+      BOOKING_TAXI_QUEUE: booking-taxi-queue-2
+    ports:
+      - "8083:8082"
 
 networks:
   fleet-net:

@@ -1,7 +1,5 @@
 package com.fleet.booking.domain.usecase;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fleet.booking.domain.entity.BookingInput;
 import com.fleet.booking.domain.repository.MessageRepository;
 import org.slf4j.Logger;
@@ -15,14 +13,14 @@ public class CreateBooking {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateBooking.class);
 
-    private MessageRepository messageRepository;
+    private final MessageRepository messageRepository;
 
     public CreateBooking(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
     }
 
     public String create(BookingInput bookingInput) {
-        LOGGER.info("Incoming Input {}", bookingInput);
+        LOGGER.info("Creating Booking {}", bookingInput);
         messageRepository.sendBookingMessage(bookingInput);
         return UUID.randomUUID().toString();
     }

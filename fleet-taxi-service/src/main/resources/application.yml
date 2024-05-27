@@ -7,6 +7,19 @@ server.port: 8082
 ##########
 logging.level.root: info
 
+# RABBITMQ
+##########
+spring:
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: user
+    password: pass
+
 # SERVICE
 ##########
-fleet-taxi: prop
+rabbitmq:
+  booking:
+    exchange-name: ${BOOKING_EXCHANGE:booking-exchange}
+    queue-name: ${BOOKING_TAXI_QUEUE:booking-taxi-queue}
+    routing-key: ${BOOKING_TAXI_ROUTE:booking-taxi-route}

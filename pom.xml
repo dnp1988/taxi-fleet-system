@@ -11,6 +11,7 @@
     <modules>
         <module>fleet-taxi-service</module>
         <module>fleet-booking-service</module>
+        <module>fleet-tests</module>
     </modules>
 
 </project>
