@@ -23,8 +23,16 @@ The project also includes a **docker-compose** file named **_docker-compose.yml_
 
 The file also contains the necessary configuration to run a **RabbitMQ** instance.
 
+```
+docker-compose -f docker-compose.yml build
+```
+
 ## Integration Tests
 
 The project includes a module named **_fleet-tests_** intended to be used for integration tests. The module is not yet implemented, but it already has a Dockerfile to be used with a **docker-compose** extension file named **_docker-compose.tests.yml_**.
 
 These tests are intended to be run inside a **Docker** container using **docker-compose**.
+
+```
+docker-compose -f docker-compose.yml -f docker-compose.tests.yml build
+```
