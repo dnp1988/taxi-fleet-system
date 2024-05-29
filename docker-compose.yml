@@ -45,7 +45,9 @@ services:
   fleet-taxi-service-1: &fleet-taxi-service
     container_name: 'fleet-taxi-service-1'
     environment:
-      BOOKING_TAXI_QUEUE: booking-taxi-queue-1
+      BOOKING_REQUEST_QUEUE: booking-taxi-queue-1
+      TAXI_NAME: taxi-1
+      TAXI_SEATS: 5
     build:
       context: ./fleet-taxi-service
       dockerfile: Dockerfile
@@ -69,7 +71,9 @@ services:
     <<: *fleet-taxi-service
     container_name: 'fleet-taxi-service-2'
     environment:
-      BOOKING_TAXI_QUEUE: booking-taxi-queue-2
+      BOOKING_REQUEST_QUEUE: booking-taxi-queue-2
+      TAXI_NAME: taxi-2
+      TAXI_SEATS: 3
     ports:
       - "8083:8082"
 

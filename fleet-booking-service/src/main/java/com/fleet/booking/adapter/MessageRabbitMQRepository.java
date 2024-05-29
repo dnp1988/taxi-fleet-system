@@ -1,11 +1,10 @@
 package com.fleet.booking.adapter;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fleet.booking.domain.entity.BookingInput;
+import com.fleet.booking.configuration.properties.RabbitMQProperties;
 import com.fleet.booking.domain.repository.MessageRepository;
+import com.fleet.message.dto.BookingMessage;
+import com.fleet.message.util.MessageMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 
@@ -13,30 +12,22 @@ import org.springframework.stereotype.Repository;
 public class MessageRabbitMQRepository implements MessageRepository {
 
     private final RabbitTemplate rabbitTemplate;
-    private final ObjectMapper objectMapper;
-    private final String bookingExchangeName;
-    private final String bookingRoutingKey;
+    private final RabbitMQProperties rabbitMQProperties;
+    private final MessageMapper messageMapper;
 
     public MessageRabbitMQRepository(RabbitTemplate rabbitTemplate,
-                                     ObjectMapper objectMapper,
-                                     @Value("${rabbitmq.booking.exchange-name}") String bookingExchangeName,
-                                     @Value("${rabbitmq.booking.routing-key}") String bookingRoutingKey) {
+                                     MessageMapper messageMapper,
+                                     RabbitMQProperties rabbitMQProperties) {
         this.rabbitTemplate = rabbitTemplate;
-        this.objectMapper = objectMapper;
-        this.bookingExchangeName = bookingExchangeName;
-        this.bookingRoutingKey = bookingRoutingKey;
+        this.messageMapper = messageMapper;
+        this.rabbitMQProperties = rabbitMQProperties;
     }
 
     @Override
-    public void sendBookingMessage(BookingInput bookingInput) {
-        rabbitTemplate.convertAndSend(bookingExchangeName, bookingRoutingKey, getMessageAsString(bookingInput));
-    }
-
-    private String getMessageAsString(Object object) {
-        try {
-            return objectMapper.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    public void sendBookingMessage(BookingMessage bookingMessage) {
+        rabbitTemplate.convertAndSend(
+                rabbitMQProperties.getBooking().getExchangeName(),
+                rabbitMQProperties.getBooking().getRequest().getRoutingKey(),
+                messageMapper.getMessageAsString(bookingMessage));
     }
 }

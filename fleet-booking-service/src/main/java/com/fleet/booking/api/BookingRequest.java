@@ -10,4 +10,8 @@ import lombok.NoArgsConstructor;
 public class BookingRequest {
 
     private Long passengers;
+
+    private Double destinationLatitude;
+
+    private Double destinationLongitude;
 }

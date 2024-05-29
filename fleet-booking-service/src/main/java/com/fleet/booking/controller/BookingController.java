@@ -25,8 +25,12 @@ public class BookingController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public BookingResponse createBooking(@RequestBody final BookingRequest booking) {
-        String id = createBooking.create(new BookingInput(booking.getPassengers()));
+    public BookingResponse createBooking(@RequestBody final BookingRequest bookingRequest) {
+        String id = createBooking.create(BookingInput.builder()
+                        .passengers(bookingRequest.getPassengers())
+                        .destinationLatitude(bookingRequest.getDestinationLatitude())
+                        .destinationLongitude(bookingRequest.getDestinationLongitude())
+                .build());
         return new BookingResponse(id);
     }
 }

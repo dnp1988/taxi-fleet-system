@@ -1,8 +1,8 @@
 package com.fleet.booking.domain.repository;
 
-import com.fleet.booking.domain.entity.BookingInput;
+import com.fleet.message.dto.BookingMessage;
 
 public interface MessageRepository {
 
-    void sendBookingMessage(BookingInput bookingInput);
+    void sendBookingMessage(BookingMessage bookingMessage);
 }

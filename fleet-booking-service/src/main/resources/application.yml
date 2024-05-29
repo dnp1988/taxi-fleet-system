@@ -21,4 +21,13 @@ spring:
 rabbitmq:
   booking:
     exchange-name: ${BOOKING_EXCHANGE:booking-exchange}
-    routing-key: ${BOOKING_TAXI_ROUTE:booking-taxi-route}
+    request:
+      routing-key: ${BOOKING_REQUEST_ROUTE:booking-request-route}
+  taxi:
+    exchange-name: ${TAXI_EXCHANGE:taxi-exchange}
+    status:
+      routing-key: ${TAXI_STATUS_ROUTE:taxi-status-route}
+      queue-name: ${TAXI_STATUS_QUEUE:taxi-status-queue}
+    claim:
+      routing-key: ${TAXI_CLAIM_ROUTE:taxi-claim-route}
+      queue-name: ${TAXI_CLAIM_QUEUE:taxi-claim-queue}

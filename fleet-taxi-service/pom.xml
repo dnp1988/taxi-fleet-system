@@ -18,6 +18,7 @@
         <java.version>11</java.version>
         <guava.version>33.0.0-jre</guava.version>
         <lombok.version>1.18.30</lombok.version>
+        <lucene-core.version>9.9.0</lucene-core.version>
     </properties>
 
     <build>
@@ -49,10 +50,20 @@
             <version>${guava.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>${lucene-core.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fleet</groupId>
+            <artifactId>fleet-message-module</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

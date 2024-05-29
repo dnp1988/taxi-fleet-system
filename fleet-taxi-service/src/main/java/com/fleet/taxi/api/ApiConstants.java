@@ -6,4 +6,6 @@ public class ApiConstants {
     }
 
     public static final String PATH_STATUS = "/status";
+
+    public static final String TAXI_BOOKINGS = "/taxi";
 }
